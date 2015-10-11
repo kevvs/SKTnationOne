@@ -1,10 +1,10 @@
 #include "point.h"
 
-// РџСЂРѕРІРµСЂРєР°, Р»РµР¶РёС‚ Р»Рё С‚РѕС‡РєР° РІРЅСѓС‚СЂРё РїР°СЂР°Р»Р»РµР»РµРїРёРїРµРґР° (РґР»СЏ РґРµСЂРµРІР°)
+// Проверка, лежит ли точка внутри параллелепипеда (для дерева)
 template<>
 bool point_t<double>::inside(double x0, double x1, double y0, double y1, double z0, double z1) const
 {
-    if(x >= x0 && x <= x1 && y >= y0 && y <= y1 && z >= z0 && z <= z1)
-        return true;
-    return false;
+	if (x >= x0 && x <= x1 && y >= y0 && y <= y1 && z >= z0 && z <= z1)
+		return true;
+	return false;
 }

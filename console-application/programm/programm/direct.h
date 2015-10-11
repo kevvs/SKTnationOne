@@ -17,65 +17,65 @@ using namespace std;
 #endif
 
 /*   _____________
- *  /|6          /|7    ^ z
- * /____________/ |     |  ^ y
- * |4|          |5|     | /
- * | |          | |     |/----> x
- * | |          | |
- * | |          | |
- * | |__________|_|
- * | /2         | /3
- * |/___________|/
- * 0            1
- */
+*  /|6          /|7    ^ z
+* /____________/ |     |  ^ y
+* |4|          |5|     | /
+* | |          | |     |/----> x
+* | |          | |
+* | |          | |
+* | |__________|_|
+* | /2         | /3
+* |/___________|/
+* 0            1
+*/
 
-/* Ð¡Ð¿Ð¸ÑÐ¾Ðº ÑÐ¾ÑÐµÐ´ÐµÐ¹:
- * 0 - ÑÐ»ÐµÐ²Ð°
- * 1 - ÑÐ¿Ñ€Ð°Ð²Ð°
- * 2 - ÑÐ¿ÐµÑ€ÐµÐ´Ð¸
- * 3 - ÑÐ·Ð°Ð´Ð¸
- * 4 - ÑÐ½Ð¸Ð·Ñƒ
- * 5 - ÑÐ²ÐµÑ€Ñ…Ñƒ
- */
+/* Ñïèñîê ñîñåäåé:
+* 0 - ñëåâà
+* 1 - ñïðàâà
+* 2 - ñïåðåäè
+* 3 - ñçàäè
+* 4 - ñíèçó
+* 5 - ñâåðõó
+*/
 
 class cube
 {
 public:
-    point * nodes[8];
-    vector3 p;
-    double mes;
-    point barycenter;
-    cube * neighbor[6];
-    cube();
-    void init();
-    vector3 get_B(point x) const;
+	point * nodes[8];
+	vector3 p;
+	double mes;
+	point barycenter;
+	cube * neighbor[6];
+	cube();
+	void init();
+	vector3 get_B(point x) const;
 
-    double gauss_weights[27];
-    point gauss_points[27];
-    double jacobian;
+	double gauss_weights[27];
+	point gauss_points[27];
+	double jacobian;
 
-    size_t num;
+	size_t num;
 };
 
 class include
 {
 public:
-    double x_min, x_max;
-    double y_min, y_max;
-    double z_min, z_max;
-    vector3 p;
-    bool inside(const cube & p) const;
-    friend istream & operator >> (istream & is, include & a);
+	double x_min, x_max;
+	double y_min, y_max;
+	double z_min, z_max;
+	vector3 p;
+	bool inside(const cube & p) const;
+	friend istream & operator >> (istream & is, include & a);
 };
 
 class area
 {
 public:
-    vector<point> nodes;
-    vector<cube> cubes;
-    vector3 get_B(point x) const;
-    double get_abs_B(point x) const;
-    void generate(const string & filename);
+	vector<point> nodes;
+	vector<cube> cubes;
+	vector3 get_B(point x) const;
+	double get_abs_B(point x) const;
+	void generate(ifstream &ifs);
 };
 
 #endif // DIRECT_H

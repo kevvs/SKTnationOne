@@ -8,175 +8,175 @@
 #include <assert.h>
 using namespace std;
 
-// РќРµРјРЅРѕРіРѕ typedef'РѕРІ
+// Немного typedef'ов
 template<typename T> class point_t;
 typedef point_t<double> point;
 typedef point_t< complex<double> > cpoint;
 
-// РљР»Р°СЃСЃ С‚РѕС‡РєР°
+// Класс точка
 template<typename T>
 class point_t
 {
 public:
-    // РљРѕРѕСЂРґРёРЅР°С‚С‹
-    T x, y, z;
-    // РќРѕРјРµСЂ С‚РѕС‡РєРё
-    size_t num;
-    // РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ
-    point_t();
-    // РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РїРѕ С‚СЂРµРј РєРѕРѕСЂРґРёРЅР°С‚Р°Рј
-    template<typename U>
-    point_t(U x, U y, U z);
-    // РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РїРѕ С‚СЂРµРј РєРѕРѕСЂРґРёРЅР°С‚Р°Рј Рё РЅРѕРјРµСЂСѓ
-    template<typename U>
-    point_t(U x, U y, U z, size_t num);
-    // РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РёР· РґСЂСѓРіРѕР№ С‚РѕС‡РєРё
-    template<typename U>
-    point_t(const point_t<U> & p);
-    // РћРїРµСЂР°С‚РѕСЂС‹ С‚РёРїР° "СЃРєРѕР±РєР°"
-    T & operator [] (size_t i);
-    T operator [] (size_t i) const;
-    // РћРїРµСЂР°С‚РѕСЂ РјРµРЅСЊС€Рµ (РїРѕ РЅРѕРјРµСЂСѓ)
-    template<typename U>
-    bool operator < (const point_t<U> & t) const;
-    // РћРїРµСЂР°С‚РѕСЂ СЂР°РІРµРЅСЃС‚РІР° (РїРѕ РЅРѕРјРµСЂСѓ)
-    template<typename U>
-    bool operator == (const point_t<U> & t) const;
-    // РћРїРµСЂР°С‚РѕСЂ РїСЂРёСЃРІР°РёРІР°РЅРёСЏ
-    point_t<T> & operator = (const point_t<T> & other);
-    template<typename U>
-    point_t<T> & operator = (const point_t<U> & other);
-    // Р’С‹РІРѕРґ
-    template<typename U>
-    friend ostream & operator << (ostream & os, const point_t<U> & a);
-    // РџСЂРѕРІРµСЂРєР°, Р»РµР¶РёС‚ Р»Рё С‚РѕС‡РєР° РІРЅСѓС‚СЂРё РїР°СЂР°Р»Р»РµР»РµРїРёРїРµРґР° (РґР»СЏ РґРµСЂРµРІР°)
-    bool inside(double x0, double x1, double y0, double y1, double z0, double z1) const;
+	// Координаты
+	T x, y, z;
+	// Номер точки
+	size_t num;
+	// Конструктор по умолчанию
+	point_t();
+	// Конструктор по трем координатам
+	template<typename U>
+	point_t(U x, U y, U z);
+	// Конструктор по трем координатам и номеру
+	template<typename U>
+	point_t(U x, U y, U z, size_t num);
+	// Конструктор из другой точки
+	template<typename U>
+	point_t(const point_t<U> & p);
+	// Операторы типа "скобка"
+	T & operator [] (size_t i);
+	T operator [] (size_t i) const;
+	// Оператор меньше (по номеру)
+	template<typename U>
+	bool operator < (const point_t<U> & t) const;
+	// Оператор равенства (по номеру)
+	template<typename U>
+	bool operator == (const point_t<U> & t) const;
+	// Оператор присваивания
+	point_t<T> & operator = (const point_t<T> & other);
+	template<typename U>
+	point_t<T> & operator = (const point_t<U> & other);
+	// Вывод
+	template<typename U>
+	friend ostream & operator << (ostream & os, const point_t<U> & a);
+	// Проверка, лежит ли точка внутри параллелепипеда (для дерева)
+	bool inside(double x0, double x1, double y0, double y1, double z0, double z1) const;
 };
 
-// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ
+// Конструктор по умолчанию
 template<typename T>
 point_t<T>::point_t()
 {
-    x = y = z = static_cast<T>(0);
-    num = 0;
+	x = y = z = static_cast<T>(0);
+	num = 0;
 }
 
-// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РїРѕ С‚СЂРµРј РєРѕРѕСЂРґРёРЅР°С‚Р°Рј
+// Конструктор по трем координатам
 template<typename T>
 template<typename U>
 point_t<T>::point_t(U x, U y, U z)
 {
-    this->x = static_cast<T>(x);
-    this->y = static_cast<T>(y);
-    this->z = static_cast<T>(z);
-    num = 0;
+	this->x = static_cast<T>(x);
+	this->y = static_cast<T>(y);
+	this->z = static_cast<T>(z);
+	num = 0;
 }
 
-// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РїРѕ С‚СЂРµРј РєРѕРѕСЂРґРёРЅР°С‚Р°Рј Рё РЅРѕРјРµСЂСѓ
+// Конструктор по трем координатам и номеру
 template<typename T>
 template<typename U>
 point_t<T>::point_t(U x, U y, U z, size_t num)
 {
-    this->x = static_cast<T>(x);
-    this->y = static_cast<T>(y);
-    this->z = static_cast<T>(z);
-    this->num = num;
+	this->x = static_cast<T>(x);
+	this->y = static_cast<T>(y);
+	this->z = static_cast<T>(z);
+	this->num = num;
 }
 
-// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РёР· РґСЂСѓРіРѕР№ С‚РѕС‡РєРё
+// Конструктор из другой точки
 template<typename T>
 template<typename U>
 point_t<T>::point_t(const point_t<U> & p)
 {
-    x = static_cast<T>(p.x);
-    y = static_cast<T>(p.y);
-    z = static_cast<T>(p.z);
-    num = p.num;
+	x = static_cast<T>(p.x);
+	y = static_cast<T>(p.y);
+	z = static_cast<T>(p.z);
+	num = p.num;
 }
 
-// РћРїРµСЂР°С‚РѕСЂС‹ С‚РёРїР° "СЃРєРѕР±РєР°"
+// Операторы типа "скобка"
 template<typename T>
 T & point_t<T>::operator [] (size_t i)
 {
-    assert(i < 3);
-    switch(i)
-    {
-    case 0:
-        return x;
-    case 1:
-        return y;
-    case 2:
-        return z;
-    }
-    return x;
+	assert(i < 3);
+	switch (i)
+	{
+	case 0:
+		return x;
+	case 1:
+		return y;
+	case 2:
+		return z;
+	}
+	return x;
 }
 
 template<typename T>
 T point_t<T>::operator [] (size_t i) const
 {
-    assert(i < 3);
-    switch(i)
-    {
-    case 0:
-        return x;
-    case 1:
-        return y;
-    case 2:
-        return z;
-    }
-    return 0;
+	assert(i < 3);
+	switch (i)
+	{
+	case 0:
+		return x;
+	case 1:
+		return y;
+	case 2:
+		return z;
+	}
+	return 0;
 }
 
-// РћРїРµСЂР°С‚РѕСЂ РјРµРЅСЊС€Рµ (РїРѕ РЅРѕРјРµСЂСѓ)
+// Оператор меньше (по номеру)
 template<typename T>
 template<typename U>
 bool point_t<T>::operator < (const point_t<U> & t) const
 {
-    return num < t.num;
+	return num < t.num;
 }
 
-// РћРїРµСЂР°С‚РѕСЂ СЂР°РІРµРЅСЃС‚РІР° (РїРѕ РЅРѕРјРµСЂСѓ)
+// Оператор равенства (по номеру)
 template<typename T>
 template<typename U>
 bool point_t<T>::operator == (const point_t<U> & t) const
 {
-    return num == t.num;
+	return num == t.num;
 }
 
-// РћРїРµСЂР°С‚РѕСЂ РїСЂРёСЃРІР°РёРІР°РЅРёСЏ
+// Оператор присваивания
 template<typename T>
 point_t<T> & point_t<T>::operator = (const point_t<T> & other)
 {
-    if(this != & other)
-    {
-        this->x = other.x;
-        this->y = other.y;
-        this->z = other.z;
-        this->num = other.num;
-    }
-    return * this;
+	if (this != &other)
+	{
+		this->x = other.x;
+		this->y = other.y;
+		this->z = other.z;
+		this->num = other.num;
+	}
+	return *this;
 }
 
 template<typename T>
 template<typename U>
 point_t<T> & point_t<T>::operator = (const point_t<U> & other)
 {
-    this->x = static_cast<T>(other.x);
-    this->y = static_cast<T>(other.y);
-    this->z = static_cast<T>(other.z);
-    this->num = other.num;
-    return * this;
+	this->x = static_cast<T>(other.x);
+	this->y = static_cast<T>(other.y);
+	this->z = static_cast<T>(other.z);
+	this->num = other.num;
+	return *this;
 }
 
-// Р’С‹РІРѕРґ
+// Вывод
 template<typename U>
 ostream & operator << (ostream & os, const point_t<U> & a)
 {
-    os << "{ " << a.x << ", " << a.y << ", " << a.z << " }";
-    return os;
+	os << "{ " << a.x << ", " << a.y << ", " << a.z << " }";
+	return os;
 }
 
-// РџСЂРѕРІРµСЂРєР°, Р»РµР¶РёС‚ Р»Рё С‚РѕС‡РєР° РІРЅСѓС‚СЂРё РїР°СЂР°Р»Р»РµР»РµРїРёРїРµРґР° (РґР»СЏ РґРµСЂРµРІР°)
+// Проверка, лежит ли точка внутри параллелепипеда (для дерева)
 template<>
 bool point_t<double>::inside(double x0, double x1, double y0, double y1, double z0, double z1) const;
 

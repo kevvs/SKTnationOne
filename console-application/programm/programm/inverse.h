@@ -15,47 +15,47 @@ using namespace std;
 class inverse_config
 {
 public:
-    bool use_alpha;     // Ð˜ÑÐ¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÑŒ Ñ€ÐµÐ³ÑƒÐ»ÑÑ€Ð¸Ð·Ð°Ñ†Ð¸ÑŽ Ð¿Ð¾ Ð°Ð»ÑŒÑ„Ð°
-    bool use_gamma;     // Ð˜ÑÐ¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÑŒ Ñ€ÐµÐ³ÑƒÐ»ÑÑ€Ð¸Ð·Ð°Ñ†Ð¸ÑŽ Ð¿Ð¾ Ð³Ð°Ð¼Ð¼Ð°
-    double alpha0;      // ÐÐ°Ñ‡Ð°Ð»ÑŒÐ½Ð¾Ðµ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ alpha
-    double dalpha;      // Ð¨Ð°Ð³ ÑƒÐ²ÐµÐ»Ð¸Ñ‡ÐµÐ½Ð¸Ñ alpha
-    double alpha_coeff; // Ð’Ð¾ ÑÐºÐ¾Ð»ÑŒÐºÐ¾ Ñ€Ð°Ð· Ð¼Ð¾Ð¶ÐµÑ‚ Ð²Ð¾Ð·Ñ€Ð°Ñ‚Ð¸ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ Ñ„ÑƒÐ½ÐºÑ†Ð¸Ð¾Ð½Ð°Ð»Ð°
-    double gamma0;      // ÐÐ°Ñ‡Ð°Ð»ÑŒÐ½Ð¾Ðµ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ gamma
-    double dgamma;      // Ð¨Ð°Ð³ ÑƒÐ²ÐµÐ»Ð¸Ñ‡ÐµÐ½Ð¸Ñ gamma
-    double gamma_coeff; // ÐÐ° ÑÐºÐ¾Ð»ÑŒÐºÐ¾ Ð¿Ð¾Ñ€ÑÐ´ÐºÐ¾Ð² Ð¼Ð¾Ð¶ÐµÑ‚ Ð²Ð¾Ð·Ñ€Ð°ÑÑ‚Ð¸ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ Ñ„ÑƒÐ½ÐºÑ†Ð¸Ð¾Ð½Ð°Ð»Ð°
-    double gamma_diff;  // Ð Ð°Ð·Ð½Ð¸Ñ†Ð° Ð¼ÐµÐ¶Ð´Ñƒ ÑÐ¾ÑÐµÐ´ÑÐ¼Ð¸, ÐºÐ¾Ñ‚Ð¾Ñ€ÑƒÑŽ ÑÑ‡Ð¸Ñ‚Ð°ÐµÐ¼ ÑƒÐ¶Ðµ Ñ€Ð°Ð·Ð½Ð¸Ñ†ÐµÐ¹
-    inverse_config();
-    friend istream & operator >> (istream & is, inverse_config & a);
-    friend ostream & operator << (ostream & os, const inverse_config & a);
+	bool use_alpha;     // Èñïîëüçîâàòü ðåãóëÿðèçàöèþ ïî àëüôà
+	bool use_gamma;     // Èñïîëüçîâàòü ðåãóëÿðèçàöèþ ïî ãàììà
+	double alpha0;      // Íà÷àëüíîå çíà÷åíèå alpha
+	double dalpha;      // Øàã óâåëè÷åíèÿ alpha
+	double alpha_coeff; // Âî ñêîëüêî ðàç ìîæåò âîçðàòè çíà÷åíèå ôóíêöèîíàëà
+	double gamma0;      // Íà÷àëüíîå çíà÷åíèå gamma
+	double dgamma;      // Øàã óâåëè÷åíèÿ gamma
+	double gamma_coeff; // Íà ñêîëüêî ïîðÿäêîâ ìîæåò âîçðàñòè çíà÷åíèå ôóíêöèîíàëà
+	double gamma_diff;  // Ðàçíèöà ìåæäó ñîñåäÿìè, êîòîðóþ ñ÷èòàåì óæå ðàçíèöåé
+	inverse_config();
+	friend istream & operator >> (istream & is, inverse_config & a);
+	friend ostream & operator << (ostream & os, const inverse_config & a);
 };
 
 class inverse
 {
 public:
-    void input(const string & fn_area, const string & fn_receivers, const string & fn_config);
-    void calc();
+	void input(const string &fn_input);//const string & fn_area, const string & fn_receivers, const string & fn_config);
+	void calc();
 
 protected:
-    vector<vector<double> > A;
-    vector<double> b;
-    vector<vector<vector3> > L;
-    size_t K, N;
-    vector<pair<point, vector3> > receivers;
+	vector<vector<double> > A;
+	vector<double> b;
+	vector<vector<vector3> > L;
+	size_t K, N;
+	vector<pair<point, vector3> > receivers;
 
-    void make_L();
-    void make_A();
-    void make_B();
-    area ar;
+	void make_L();
+	void make_A();
+	void make_B();
+	area ar;
 
-    double alpha;
-    vector<vector3> gamma;
+	double alpha;
+	vector<vector3> gamma;
 
-    void solve_gauss(vector<vector<double> > & matrix, vector<double> & right_part, vector<double> & solution) const;
-    double calc_functional_FI(const vector <double> & solution);
-    double calc_functional_FI_alpha_gamma(const vector <double> & solution);
+	void solve_gauss(vector<vector<double> > & matrix, vector<double> & right_part, vector<double> & solution) const;
+	double calc_functional_FI(const vector <double> & solution);
+	double calc_functional_FI_alpha_gamma(const vector <double> & solution);
 
-    void print_solution(const vector<double> & solution, const string & filename);
-    inverse_config cfg;
+	void print_solution(const vector<double> & solution, const string & filename);
+	inverse_config cfg;
 };
 
 #endif // INVERSE_H
