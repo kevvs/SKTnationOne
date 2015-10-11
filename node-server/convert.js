@@ -1,15 +1,14 @@
-function fullCordinates(coord){
-	return coord.xmin + " " + coord.xmax + "\n" +
-		coord.ymin + " " + coord.ymax + "\n" +
-		coord.zmin + " " + coord.zmax + "\n" +
-		coord.xnum + " " + coord.ynum + " " + coord.znum + "\n";
-}
-
-function getReciever(r){
-	return r.x + "\t" + r.y + "\t" + r.z + "\t" + "\n";
-}
-
 function convertDataToString(data){
+  function fullCordinates(coord){
+    return coord.xmin + " " + coord.xmax + "\n" +
+      coord.ymin + " " + coord.ymax + "\n" +
+      coord.zmin + " " + coord.zmax + "\n" +
+      coord.xnum + " " + coord.ynum + " " + coord.znum + "\n";
+  }
+
+  function getReciever(r){
+    return r.x + "\t" + r.y + "\t" + r.z + "\t" + "\n";
+  }
 	
 	var ret;
 	ret = "" + fullCordinates(data.area) + "\n" + 
