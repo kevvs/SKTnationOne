@@ -9,134 +9,89 @@
     <meta name="keywords" content="skt, openmp, fem" />
     <meta name="author" content="kevvs" />
 
-    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/bootstrap/css/bootstrap-theme.min.css">
+    <!--link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css"-->
+    <!--link rel="stylesheet" href="/bootstrap/css/bootstrap-theme.min.css"-->
+    <!--link rel="stylesheet" href="/css/normalize.css"-->
     <link rel="stylesheet" href="/css/index.css">
 
     <script src="/js/jquery.min.js"></script>
-    <script src="/bootstrap/js/bootstrap.min.js"></script>
+    <!--script src="/bootstrap/js/bootstrap.min.js"></script-->
     <script src="/js/d3.min.js"></script>
     <script src="/js/index.js"></script>
 
     <link rel="shortcut icon" href="favicon.ico">
   </head>
   <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container-fluid">
-          <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="#">Магниторазведка</a>
+    <header><h1>Магниторазведка</h1></header>
+    <main>
+      <section>
+          <div id="main-graph">
           </div>
-          <div id="navbar" class="navbar-collapse collapse">
-            <ul class="nav navbar-nav navbar-right">
-              <li><a href="#">Dashboard</a></li>
-              <li><a href="#">Settings</a></li>
-              <li><a href="#">Profile</a></li>
-              <li><a href="#">Help</a></li>
-            </ul>
-            <form class="navbar-form navbar-right">
-              <input type="text" class="form-control" placeholder="Search...">
-            </form>
-          </div>
-        </div>
-    </nav>
-    <div id="main" class="container-fluid">
-      <div class="row">
-        <!--div class="col-sm-2 sidebar">
-          <ul class="nav nav-sidebar">
-            <li class="active"><a href="#">Task #1</a></li>
-            <li><a href="#">Task #2</a></li>
-            <li><a href="#">Task #3</a></li>
-            <li><a href="#">Task #4</a></li>
-          </ul>
-        </div-->
-        <!--div class="col-sm-10 col-sm-offset-2 main"-->
-        <div class="col-sm-12 main">
-          <!--h1 class="page-header">Магниторазведка</h1-->
-          <div class="row">
-            <div class="col-sm-8">
-              <div id="main-graph">
-                <!--h4>Место для вашей рекламы</h4-->
-              </div>
-            </div>
-            <div class="col-sm-4">
-              <div id="panel-settings">
-                <h4>Настройки</h4>
-                <form id="myform" method="post" >
-                    <fieldset>
-                        Координаты рассматриваемой сетки и число ячеек:<br>
-                        Ось X от <input name="xmin" type="text"> до <input name="xmax" type="text"> , <input name="xnum" type="text"><br>
-                        Ось Y от <input name="ymin" type="text"> до <input name="ymax" type="text"> , <input name="ynum" type="text"><br>
-                        Ось Z от <input name="zmin" type="text"> до <input name="zmax" type="text"> , <input name="znum" type="text"><br>
+        <!--h4>Место для вашей рекламы</h4-->
+      </section>
+      <aside id="panel-settings">
+        <section>
+            <h2>Настройки</h2>
+            <form id="myform" method="post" >
+                <fieldset>
+                    Координаты рассматриваемой сетки и число ячеек:<br>
+                    Ось X от <input name="xmin" type="text"> до <input name="xmax" type="text"> , <input name="xnum" type="text"><br>
+                    Ось Y от <input name="ymin" type="text"> до <input name="ymax" type="text"> , <input name="ynum" type="text"><br>
+                    Ось Z от <input name="zmin" type="text"> до <input name="zmax" type="text"> , <input name="znum" type="text"><br>
 
-                    </fieldset>
-                    <fieldset>
-                        Число закрашенных(?) областей: <input id="incnum" type="number" value="1" min="1">
-                        <table id="includes">
-                            <!-- Заголовки //-->
-                            <thead>
-                                <td scope="col">&#8194; min(x)</td>
-                                <td scope="col">&#8194; max(x)</td>
-                                <td scope="col">&#8194; min(y)</td>
-                                <td scope="col">&#8194; max(y)</td>
-                                <td scope="col">&#8194; min(z)</td>
-                                <td scope="col">&#8194; max(z)</td>
-                                <td scope="col">&#8194; кол.X</td>
-                                <td scope="col">&#8194; кол.Y</td>
-                                <td scope="col">&#8194; кол.Z</td>
-                            </thead>
-                            <!-- Сюда будем добавлять //-->
-                            <tbody></tbody>
-                        </table>
-                    </fieldset>
-                    <fieldset>
-                        Количество приёмников: <input id="n_receivers" type="number" value="1" min="1">
-                        <table id="receivers">
-                            <!-- Заголовки //-->
-                            <thead>
-                                <tr>
-                                    <td scope="col">координата x &#8194;</td>
-                                    <td scope="col">координата y &#8194;</td>
-                                    <td scope="col">координата z &#8194;</td>
-                                </tr>
-                            </thead>
-                            <!-- Сюда будем добавлять строки //-->
-                            <tbody></tbody>
-                        </table>
-                    </fieldset>
-                    <fieldset>
-                        <input class="use_parap_reg" type="checkbox" name="use_alpha"> использовать регуляризацию по &#945;<br>
-                        <input name="alpha0" size="10" type="text"> начальное значение &#945;<br>
-                        <input name="dalpha" size="10" type="text"> шаг увеличения &#945;<br>
-                        <input name="alpha_coeff" size="10" type="text"> во сколько раз может возрасти значение функционала<br>
-                    </fieldset>
-                    <fieldset>
-                        <input class="use_parap_reg" type="checkbox" name="use_gamma"> использовать регуляризацию по &#947;<br>
-                        <input name="gamma0" size="10" type="text"> начальное значение &#947;<br>
-                        <input name="dgamma" size="10" type="text"> шаг увеличения &#947;<br>
-                        <input name="gamma_coeff" size="10" type="text"> на сколько порядков может возрасти значение функционала<br>
-                        <input name="gamma_diff" size="10" type="text"> разница между соседями, которую считаем уже разницей(?)<br>
-                    </fieldset>
-                    <fieldset>
-                        <input type="submit"> <input type=reset>
-                    </p>
-                </form>
-                <!--p>Место для вашей формы</p-->
-                <!--form id="myform" method="post">
-                  <input name="name" type="text"><br>
-                  <input name="country" type="text">
-                  <input type="submit" value="ok">
-               </fo>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+                </fieldset>
+                <fieldset>
+                    Число закрашенных(?) областей: <input id="incnum" type="number" value="1" min="1">
+                    <table id="includes">
+                        <!-- Заголовки //-->
+                        <thead>
+                            <td scope="col">&#8194; min(x)</td>
+                            <td scope="col">&#8194; max(x)</td>
+                            <td scope="col">&#8194; min(y)</td>
+                            <td scope="col">&#8194; max(y)</td>
+                            <td scope="col">&#8194; min(z)</td>
+                            <td scope="col">&#8194; max(z)</td>
+                            <td scope="col">&#8194; кол.X</td>
+                            <td scope="col">&#8194; кол.Y</td>
+                            <td scope="col">&#8194; кол.Z</td>
+                        </thead>
+                        <!-- Сюда будем добавлять //-->
+                        <tbody></tbody>
+                    </table>
+                </fieldset>
+                <fieldset>
+                    Количество приёмников: <input id="n_receivers" type="number" value="1" min="1">
+                    <table id="receivers">
+                        <!-- Заголовки //-->
+                        <thead>
+                            <tr>
+                                <td scope="col">координата x &#8194;</td>
+                                <td scope="col">координата y &#8194;</td>
+                                <td scope="col">координата z &#8194;</td>
+                            </tr>
+                        </thead>
+                        <!-- Сюда будем добавлять строки //-->
+                        <tbody></tbody>
+                    </table>
+                </fieldset>
+                <fieldset>
+                    <input class="use_parap_reg" type="checkbox" name="use_alpha"> использовать регуляризацию по &#945;<br>
+                    <input name="alpha0" size="10" type="text"> начальное значение &#945;<br>
+                    <input name="dalpha" size="10" type="text"> шаг увеличения &#945;<br>
+                    <input name="alpha_coeff" size="10" type="text"> во сколько раз может возрасти значение функционала<br>
+                </fieldset>
+                <fieldset>
+                    <input class="use_parap_reg" type="checkbox" name="use_gamma"> использовать регуляризацию по &#947;<br>
+                    <input name="gamma0" size="10" type="text"> начальное значение &#947;<br>
+                    <input name="dgamma" size="10" type="text"> шаг увеличения &#947;<br>
+                    <input name="gamma_coeff" size="10" type="text"> на сколько порядков может возрасти значение функционала<br>
+                    <input name="gamma_diff" size="10" type="text"> разница между соседями, которую считаем уже разницей(?)<br>
+                </fieldset>
+                <fieldset>
+                    <input type="submit"> <input type=reset>
+                </p>
+            </form>
+        </section>
+    </aside>
   </body>
 </html>

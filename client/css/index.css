@@ -1,100 +1,63 @@
-
-/*
- * Base structure
- */
-
-/* Move down content because we have a fixed navbar that is 50px tall */
 body {
-    padding-top: 50px;
+    padding: 0;
+    margin: 0;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 14px;
+    min-width: 1300px;
 }
-
-
-/*
- * Global add-ons
- */
-
-.sub-header {
-    padding-bottom: 10px;
-    border-bottom: 1px solid #eee;
+header {
+    height: 50px;
+    position: fixed;
+    right: 0;
+    left: 0;
+    background-color: black;
+    padding-left: 15px;
+    vertical-align: middle;
 }
-
-/*
- * Top navigation
- * Hide default border to remove 1px line.
- */
-.navbar-fixed-top {
-    border: 0;
+header h1 {
+    display: inline-block;
+    color: #9d9d9d;
+    font-size: 18px;
+    line-height: 20px;
+    cursor: pointer;
 }
-
-/*
- * Sidebar
- */
-
-/* Hide for mobile, show later */
-.sidebar {
-    display: none;
-}
-@media (min-width: 768px) {
-    .sidebar {
-        position: fixed;
-        top: 51px;
-        bottom: 0;
-        left: 0;
-        z-index: 1000;
-        display: block;
-        padding: 20px;
-        overflow-x: hidden;
-        overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
-        background-color: #f5f5f5;
-        border-right: 1px solid #eee;
-    }
-}
-
-/* Sidebar navigation */
-.nav-sidebar {
-    margin-right: -21px; /* 20px padding + 1px border */
-    margin-bottom: 20px;
-    margin-left: -20px;
-}
-.nav-sidebar > li > a {
-    padding-right: 20px;
-    padding-left: 20px;
-}
-.nav-sidebar > .active > a,
-.nav-sidebar > .active > a:hover,
-.nav-sidebar > .active > a:focus {
+header h1:hover {
     color: #fff;
-    background-color: #428bca;
 }
-
-
-/*
- * Main content
- */
-
-.main {
-    padding: 20px;
-}
-@media (min-width: 768px) {
-    .main {
-        padding-right: 40px;
-        padding-left: 40px;
-    }
-}
-.main .page-header {
-    margin-top: 0;
-}
-
-
-.footer {
-    position: absolute;
-    bottom: 0;
+main {
+    padding-top: 50px;
     width: 100%;
-    /* Set the fixed height of the footer here */
-    height: 25px;
-    background-color: #f5f5f5;
+    height: 100vh;
 }
-
+main > section {
+    width: 70%;
+    height: 100%;
+}
+main > aside {
+    width: 30%;
+}
+main > * {
+    float: left;
+    padding: 0;
+    margin: 0;
+}
+aside > section {
+    padding: 10px;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+    margin: 10px;
+}
+section > h2 {
+    color: #337ab7;
+    text-align: center;
+    font-size: 18px;
+    margin: 10px 0;
+}
+fieldset {
+    border: none;
+    margin: 0 2px;
+    padding: 0.35em 0.625em 0.75em;
+}
 #main-graph {
     width: 100%;
     /* height: 100%; */
@@ -105,13 +68,8 @@ body {
     border-radius: 5px;
     color: #F5F5F5;
 }
-#panel-settings {
+#panel-settings form {
     width: 100%;
-    padding: 15px;
-    background-color: #f5f5f5;
-    border-radius: 4px;
-    /*color: white;*/
-    /*background-color: teal;*/
 }
 #panel-settings form input[type="text"],
 #panel-settings form input[type="number"]  {
@@ -131,7 +89,8 @@ body {
     table-layout: fixed;
 }
 #includes thead, #receivers thead{
-    font-size: 75%;
+    font-size: 10px;
+    text-align: center;
 }
 .cell {
     /*fill: #fff;*/
