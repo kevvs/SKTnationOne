@@ -171,21 +171,25 @@ $(document).ready(function() {
             }
         }
     }
-    $("#n_receivers").bind('keyup input', function(e){
-        UpdateTable(3, $(this).val(), $("#receivers"));
-    });
-    $("#incnum").bind('keyup input', function(e){
-        UpdateTable(9, $(this).val(), $("#includes"));
-    });
-    $(".use_parap_reg").click(function() { // TODO после сброса ресетом не обнуляет эти поля
+
+    var n_recvs = $("#n_receivers");
+    var incnum  = $("#incnum");
+    var usr_param_reg = $(".use_parap_reg");
+    var main_graph = $("#main-graph");
+
+    n_recvs.bind('keyup input', function(){ UpdateTable(3, $(this).val(), $("#receivers")); });
+    incnum.bind('keyup input', function(){ UpdateTable(9, $(this).val(), $("#includes")); });
+    usr_param_reg.click(function() { // TODO после сброса ресетом не обнуляет эти поля
         var ctx = $(this);
         ctx.parent("fieldset")
             .find("input")
             .not("input[name='"+ctx.attr("name")+"']")
             .prop("disabled", !ctx.prop("checked"));
     });
-    $("#n_receivers").trigger("input");
-    $("#incnum").trigger("input");
-    $(".use_parap_reg").click();
-    PlotsD3($("#main-graph").width(), $("#main-graph").height());
+
+    n_recvs.trigger("input");
+    incnum.trigger("input");
+    usr_param_reg.click();
+
+    PlotsD3(main_graph.width(), main_graph.height());
 });
