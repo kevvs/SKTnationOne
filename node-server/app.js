@@ -36,8 +36,10 @@ var baseTask = {
   status: "edited", // started, finished, failed, saving
   started: null,
   finished: null,
-  input: null,
-  inputString: null,
+  input: {
+    json: null,
+    "converted-string": null
+  },
   output: null,
   console : {
     command: "./a.exe input.txt output.txt",
@@ -57,12 +59,12 @@ app.post('/api/1.0/task', function (req, res) {
   var data = req.body;
   task.status = "saving";
   task.started = new Date();
-  task.input = data;
+  task.input.json = data;
   var input = convert.convertDataToString(data);
-  task.inputString = input;
+  task.input["converted-string"] = input;
   fs.writeFileSync(inputPath, input);
   task.status = "started";
-  exec("cd ../console-application && ./a.exe input.txt output.txt", function (err, so, se) {
+  exec("cd ../console-application && " + task.console.command, function (err, so, se) {
     console.log('stdout: ' + so); task.console.stdout = so;
     console.log('stderr: ' + se); task.console.stderr = se;
     if (error !== null) {
