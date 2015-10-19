@@ -32,7 +32,7 @@ app.use(express.static(paths.statics));
 app.use(express.static(paths.html));
 app.use('/', express.static(paths.home));
 
-var task = {
+var baseTask = {
   status: "edited", // started, finished, failed, saving
   started: null,
   finished: null,
@@ -44,10 +44,13 @@ var task = {
   }
 };
 
+var task;
+
 var inputPath = "../console-application/input.txt";
 var outputPath = "../console-application/output.txt";
 
 app.post('/api/1.0/task', function (req, res) {
+  task = baseTask; // reset server state
   var data = req.body;
   task.status = "saving";
   task.started = new Date();
@@ -57,11 +60,12 @@ app.post('/api/1.0/task', function (req, res) {
   fs.writeFileSync(inputPath, input);
   task.status = "started";
   exec("cd ../console-application && ./a.exe input.txt output.txt", function (err, so, se) {
-    console.log('stdout: ' + so);
-    console.log('stderr: ' + se);
+    console.log('stdout: ' + so); task.console.stdout = so;
+    console.log('stderr: ' + se); task.console.stderr = se;
     if (error !== null) {
       console.log('exec error: ' + err);
       task.status = "failed";
+      task.console.exec_error = err;
       return;
     }
     task.output = fs.readFileSync(outputPath);
@@ -78,8 +82,8 @@ app.get('/api/1.0/task', function (req, res) {
 http
   .createServer(app)
   .listen(
-  app.get('port'),
-  function () {
-    console.log('Express server listening on port ' + app.get('port'));
-  }
-);
+    app.get('port'),
+    function () {
+      console.log('Express server listening on port ' + app.get('port'));
+    }
+  );
