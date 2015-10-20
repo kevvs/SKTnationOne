@@ -40,11 +40,14 @@ var baseTask = {
   inputString: null,
   output: null,
   console : {
-    command: "./a.exe input.txt output.txt"
+    command: "./a.exe input.txt output.txt",
+    stdout: null,
+    stderr: null,
+    exec_error: null
   }
 };
 
-var task;
+var task = baseTask;
 
 var inputPath = "../console-application/input.txt";
 var outputPath = "../console-application/output.txt";
@@ -76,7 +79,7 @@ app.post('/api/1.0/task', function (req, res) {
 });
 
 app.get('/api/1.0/task', function (req, res) {
-  res.status(200).send(task);
+  res.send(JSON.stringify(task));
 });
 
 http
