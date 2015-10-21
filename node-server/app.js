@@ -84,6 +84,14 @@ app.get('/api/1.0/task', function (req, res) {
   res.send(JSON.stringify(task));
 });
 
+app.get('/api/1.0/raml', function (req, res) {
+  fs.readFile('./api.raml', function (err, data) {
+    if (err) throw err;
+    res.type('text/plain').send(data);
+  });
+
+});
+
 http
   .createServer(app)
   .listen(

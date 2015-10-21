@@ -1,0 +1,385 @@
+#%RAML 0.8
+
+title: SKTnationOne API
+baseUri: http://localhost:8080/api/1.0
+version: 1.0
+traits:
+  - internal:
+      displayName: FOR INTERNAL USE
+      usage: Mark method for testing purpose
+      description: This method used for testing purposes
+  - Unauthorized:
+      responses:
+        401:
+          description: Unauthorized
+          body:
+            application/json:
+              schema: |
+                {
+                  "$schema": "http://json-schema.org/draft-03/schema", "type": "object",
+                  "required": true,
+                  "properties": {
+                    "code": {
+                      "required": true,
+                      "type": "integer"
+                    },
+                    "errorType": {
+                      "required": true,
+                      "type": "string"
+                    },
+                    "errorMessage": {
+                      "required": true,
+                      "type": "string"
+                    }
+                  }
+                }
+              example: |
+                {
+                  "code": 401,
+                  "errorType": "Unauthorized",
+                  "errorMessage": "The supplied authentication is invalid"
+                }
+  - BadRequest:
+      responses:
+        400:
+          description: Bad Request
+          body:
+            application/json:
+              schema: |
+                {
+                  "$schema": "http://json-schema.org/draft-03/schema",
+                  "type": "object",
+                  "required": true,
+                  "properties": {
+                    "code": {
+                      "required": true,
+                      "type": "integer"
+                    },
+                    "errorType": {
+                      "required": true,
+                      "type": "string"
+                    },
+                    "errorMessage": {
+                      "required": true,
+                      "type": "string"
+                    }
+                  }
+                }
+              example: |
+                {
+                  "code": 400,
+                  "errorType": "Bad Request",
+                  "errorMessage": "The form field 'status' was malformed:\nUnknown status value 'aosed'. Possible status values: [opened, closed]"
+                }
+  - NotFound:
+      responses:
+        404:
+          description: Not Found
+          body:
+            application/json:
+              schema: |
+                {
+                  "$schema": "http://json-schema.org/draft-03/schema",
+                  "type": "object",
+                  "required": true,
+                  "properties": {
+                    "code": {
+                      "required": true,
+                      "type": "integer"
+                    },
+                    "errorType": {
+                      "required": true,
+                      "type": "string"
+                    },
+                    "errorMessage": {
+                      "required": true,
+                      "type": "string"
+                    }
+                  }
+                }
+              example: |
+                {
+                  "code": 404,
+                  "errorType": "Not Found",
+                  "errorMessage": "Selected resource not found"
+                }
+  - InternalServerError:
+      responses:
+        500:
+          description: Internal Server Error
+          body:
+            application/json:
+              schema: |
+                {
+                  "$schema": "http://json-schema.org/draft-03/schema",
+                  "type": "object",
+                  "required": true,
+                  "properties": {
+                    "code": {
+                      "required": true,
+                      "type": "integer"
+                    },
+                    "errorType": {
+                      "required": true,
+                      "type": "string"
+                    },
+                    "errorMessage": {
+                      "required": true,
+                      "type": "string"
+                    }
+                  }
+                }
+              example: |
+                {
+                  "code": 500,
+                  "errorType": "Internal Server Error",
+                  "errorMessage": "There was an internal server error."
+                }
+/task:
+  get:
+    is: [ Unauthorized, BadRequest, InternalServerError ]
+    description: Get task info
+    responses:
+      200:
+        description: Correct information about current task
+        body:
+          application/json:
+            schema: |
+              {
+                "$schema": "http://json-schema.org/draft-03/schema",
+                "type": "object",
+                "required": true,
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "enum": ["edited", "running", "failed", "finished", "saving"],
+                    "required": true
+                  },
+                  "started": {
+                    "type": "string",
+                    "required": true
+                  },
+                  "finished": {
+                    "type": "string",
+                    "required": true
+                  },
+                  "input": {
+                    "type": "object",
+                    "required": true,
+                    "properties": {
+                      "json": {
+                        "type": "object",
+                        "required": true
+                      },
+                      "converted-string": {
+                        "type": "string",
+                        "required": true
+                      }
+                    }
+                  },
+                  "output": {
+                    "type": "object",
+                    "required": true,
+                    "properties": {
+                      "user-data": {
+                        "type": "array[array[real]]",
+                        "required": true
+                      },
+                      "result-data": {
+                        "type": "array[array[real]]",
+                        "required": true
+                      },
+                      "analytical": {
+                        "type": "object",
+                        "required": true,
+                        "properties": {
+                          "bx": {
+                            "type": "array[real]",
+                            "required": true
+                          },
+                          "by": {
+                            "type": "array[real]",
+                            "required": true
+                          },
+                          "bz": {
+                            "type": "array[real]",
+                            "required": true
+                          }
+                        }
+                      },
+                      "calculated": {
+                        "type": "object",
+                        "required": true,
+                        "properties": {
+                          "bx": {
+                            "type": "array[real]",
+                            "required": true
+                          },
+                          "by": {
+                            "type": "array[real]",
+                            "required": true
+                          },
+                          "bz": {
+                            "type": "array[real]",
+                            "required": true
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "console": {
+                    "type": "object",
+                    "required": false,
+                    "properties": {
+                      "command": {
+                        "type": "string",
+                        "required": true
+                      },
+                      "stdout": {
+                        "type": "string",
+                        "required": false
+                      },
+                      "stderr": {
+                        "type": "string",
+                        "required": false
+                      },
+                      "exec_error": {
+                       "type": "string",
+                       "required": false
+                      }
+                    }
+                  }
+                }
+              }
+            example: |
+              {
+                "status": "edited",
+                "started": null,
+                "finished": null,
+                "input": {
+                  "json": null,
+                  "converted-string": null
+                },
+                "output": {
+                  "user-data": [[1, 2, 3]],
+                  "result-data": [[1, 2, 3]],
+                  "analytical": {
+                    "bx": [1, 2, 3],
+                    "by": [1, 2, 3],
+                    "bz": [1, 2, 3]
+                  },
+                  "calculated": {
+                    "bx": [1, 2, 3],
+                    "by": [1, 2, 3],
+                    "bz": [1, 2, 3]
+                  }
+                },
+                "console": {
+                  "command": "./a.exe input.txt output.txt",
+                  "stdout": null,
+                  "stderr": null,
+                  "exec_error":null
+                }
+              }
+  post:
+    is: [ Unauthorized, BadRequest, InternalServerError ]
+    description: Create and run task
+    body:
+      application/json:
+        example: |
+          {
+            "area" : {
+              "xmin" : 1,
+              "xmax" : 2,
+              "ymin" : 1,
+              "ymax" : 2,
+              "zmin" : 1,
+              "zmax" : 2,
+              "xnum" : 1,
+              "ynum" : 2,
+              "znum" : 3,
+              "incnum" : 4,
+              "includes" : [
+                {
+                  "xmin" : 1,
+                  "xmax" : 2,
+                  "ymin" : 1,
+                  "ymax" : 2,
+                  "zmin" : 1,
+                  "zmax" : 2,
+                  "xnum" : 1,
+                  "ynum" : 2,
+                  "znum" : 3
+                }, {
+                  "xmin" : 1,
+                  "xmax" : 2,
+                  "ymin" : 1,
+                  "ymax" : 2,
+                  "zmin" : 1,
+                  "zmax" : 2,
+                  "xnum" : 1,
+                  "ynum" : 2,
+                  "znum" : 3
+                }, {
+                  "xmin" : 1,
+                  "xmax" : 2,
+                  "ymin" : 1,
+                  "ymax" : 2,
+                  "zmin" : 1,
+                  "zmax" : 2,
+                  "xnum" : 1,
+                  "ynum" : 2,
+                  "znum" : 3
+                }, {
+                  "xmin" : 1,
+                  "xmax" : 2,
+                  "ymin" : 1,
+                  "ymax" : 2,
+                  "zmin" : 1,
+                  "zmax" : 2,
+                  "xnum" : 1,
+                  "ynum" : 2,
+                  "znum" : 3
+                }
+              ]
+            },
+            "receivers" : {
+              "N" : 1600,
+              "rcvr" : [
+                {
+                  "x" : 1,
+                  "y" : 1,
+                  "z" : 1
+                }, {
+                  "x" : 1,
+                  "y" : 1,
+                  "z" : 1
+                }, {
+                  "x" : 1,
+                  "y" : 1,
+                  "z" : 1
+                }, {
+                  "x" : 1,
+                  "y" : 1,
+                  "z" : 1
+                }
+              ]
+            },
+            "config" : {
+              "use_alpha" : 0,
+              "use_gamma" : 1,
+              "alpha0" : 1,
+              "dalpha" : 1,
+              "alpha_coeff" : 1,
+              "gamma0" : 1,
+              "dgamma" : 1,
+              "gamma_coeff" : 1,
+              "gamma_diff" : 1
+            }
+          }
+    responses:
+      201:
+        description: Task created and runned correctly
+/raml:
+  get:
+    description: This RAML file
