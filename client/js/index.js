@@ -27,16 +27,30 @@ $(document).ready(function() {
                       -3.36661,	8.07187,	-10.4037,	42.2142,
                       12.3066,	-11.7717,	80.9198,	-53.1436,
                       -12.9868,	28.4935,	-56.3632,	-10.0251];
-
-            var rect = svg.selectAll(".cell")
-                        .data(data)
-                      .enter().append("rect")
-                        .attr("class", "cell")
-                        .attr("width", cellSize)
-                        .attr("height", cellSize)
-                        .attr("x", function(d ,i) { return  (i % nCol) * cellSize  + padding; }) //TODO сделать через x.domain
-                        .attr("y", function(d, i) { return   Math.floor(i/nCol)* cellSize  + padding; })
-                        .style("fill", function(d) { return colorScale(d); });
+            var group = svg.append("g");
+            group.selectAll(".cell")
+                .data(data)
+              .enter().append("rect")
+                .attr("class", "cell")
+                .attr("width", cellSize)
+                .attr("height", cellSize)
+                .attr("x", function(d ,i) { return  (i % nCol) * cellSize  + padding; }) //TODO СЃРґРµР»Р°С‚СЊ С‡РµСЂРµР· x.domain
+                .attr("y", function(d, i) { return   Math.floor(i/nCol)* cellSize  + padding; })
+                .style("fill", function(d) { return colorScale(d); });
+            group = svg.append("g");
+            var data2 = [-1.43275,	-5.48564,	0.418131,	-6.33078,
+                  -3.36661,	8.07187,	-10.4037,	42.2142,
+                  12.3066,	-11.7717,	80.9198,	-53.1436,
+                  -12.9868,	28.4935,	-56.3632,	-10.0251];
+            group.selectAll(".cell")
+                .data(data2)
+              .enter().append("rect")
+                .attr("class", "cell")
+                .attr("width", cellSize)
+                .attr("height", cellSize)
+                .attr("x", function(d ,i) { return  cellSize * nCol + (i % nCol) * cellSize  + 2*padding; }) //TODO СЃРґРµР»Р°С‚СЊ С‡РµСЂРµР· x.domain
+                .attr("y", function(d, i) { return   Math.floor(i/nCol)* cellSize  + padding; })
+                .style("fill", function(d) { return colorScale(d); });
 
         }
         function Legend() {
@@ -46,7 +60,7 @@ $(document).ready(function() {
                 .data(colors.reverse()).enter()
                 .append("rect")
                 .attr("class", "legend")
-                .attr("x", function(d, i) { return nRow * cellSize + 2*padding;})
+                .attr("x", function(d, i) { return nRow * cellSize * 2 + 3*padding;})
                 .attr("y", function(d, i) { return cellSize * i / 2 + 2*padding;})
                 .attr("width", cellSize / 2)
                 .attr("height", cellSize / 2)
@@ -57,7 +71,7 @@ $(document).ready(function() {
                 .append("text")
                 .attr("class", "legend-text")
                 .text(function(d, i) { return Math.ceil(d * 100)/100; })
-                .attr("x", function(d, i) { return (nRow + 0.5) * cellSize + 10+ 2*padding; })
+                .attr("x", function(d, i) { return nRow * cellSize * 2 + 3.5*padding + cellSize/2; })
                 .attr("y", function(d, i) { return cellSize * i / 2  + 2*padding; });
         }
         function Graph() {
@@ -163,7 +177,7 @@ $(document).ready(function() {
     function UpdateTable(nCol, nRow, table) {
         var tbody = table.find("tbody").html("");
         nRow = parseInt(nRow);
-        var input_w = $("#receivers").width()/nCol;
+        var input_w = table.width()/nCol;
         for(var i = 0; i < nRow; i++) {
             var tr = $("<tr/>").appendTo(tbody);
             for(var j = 0; j < nCol; j++) {
@@ -172,24 +186,160 @@ $(document).ready(function() {
         }
     }
 
-    var n_recvs = $("#n_receivers");
-    var incnum  = $("#incnum");
-    var usr_param_reg = $(".use_parap_reg");
-    var main_graph = $("#main-graph");
+    var $n_recvs = $("#n_receivers"),
+        $incnum  = $("#incnum"),
+        $usr_param_reg = $(".use_parap_reg"),
+        $main_graph = $("#main-graph"),
+        $includes =  $("#includes"),
+        $receivers = $("#receivers"),
+        $example_li = $("#examples li"),
+        $form = $("#task");
 
-    n_recvs.bind('keyup input', function(){ UpdateTable(3, $(this).val(), $("#receivers")); });
-    incnum.bind('keyup input', function(){ UpdateTable(9, $(this).val(), $("#includes")); });
-    usr_param_reg.click(function() { // TODO после сброса ресетом не обнуляет эти поля
+    function defaultForm() {
+        $n_recvs.val(1);
+        $n_recvs.trigger("input");
+        $incnum.val(1);
+        $incnum.trigger("input");
+        $usr_param_reg.click();
+    }
+
+    $n_recvs.bind('keyup input', function() { UpdateTable(3, $(this).val(), $receivers); });
+    $incnum.bind('keyup input', function() { UpdateTable(9, $(this).val(), $includes); });
+
+    $usr_param_reg.click(function() {
         var ctx = $(this);
         ctx.parent("fieldset")
             .find("input")
             .not("input[name='"+ctx.attr("name")+"']")
             .prop("disabled", !ctx.prop("checked"));
     });
+    $example_li.click(function() {
+        $.ajax({
+            dataType: "json",
+            url: "json/" + $(this).attr("data-file"),
+            success: function(test) {
+                    setTest(test);
+            }
+        });
+    });
+    $form.bind('reset', function(e) {
+        e.preventDefault();
+        $form.find("input[type='number']").val("");
+        $usr_param_reg.prop("checked", false);
+        defaultForm();
+    });
 
-    n_recvs.trigger("input");
-    incnum.trigger("input");
-    usr_param_reg.click();
+    $form.bind('submit', function(e) {
+        e.preventDefault();
+        var test = getTest();
+        //TODO make request "/task"
+    });
 
-    PlotsD3(main_graph.width(), main_graph.height());
+    function getTest() {
+        var data = {axis: {}, includes: [], receivers: [], config: {}};
+        data.axis = getValFromGroups(['x', 'y', 'z'], ['min', 'max', 'num']);
+        var checked_group = $usr_param_reg.map(function() {
+                                    if($(this).prop("checked"))
+                                        return $(this).attr("name");
+                                }).get();
+        data.config    = $.extend({alpha: [] , gamma: []}, getValFromGroups(checked_group, ['0', '_step', '_coeff']));
+        data.includes  = getValFromTable($includes);
+        data.receivers = getValFromTable($receivers);
+        //console.log(data);
+        console.log(JSON.stringify(data));
+        function getValFromGroups(groups_names, fields) {
+            var groups = {};
+            groups_names.forEach(function(name) {
+                groups[name] = fields.map(function(m) {
+                         return parseFloat($form.find("input[name='" + name + m + "']").val());
+                    });
+            });
+            return groups;
+        }
+        function getValFromTable(table) {
+            var info = [];
+            table.find("tbody tr").each(function() {
+                info.push($(this).find("input")
+                                 .map(function() {
+                                    return parseFloat($(this).val());
+                                 })
+                                 .get());
+            });
+            return info;
+        }
+        return data;
+    }
+    function setTest(test) {
+        $form.trigger('reset');
+
+        setValForGroups(test.axis, ['min', 'max', 'num']);
+        setValForGroups(test.config, ['0', '_step', '_coeff']);
+
+        Object.keys(test.config).forEach(function(k) {
+            if(test.config[k].length == 0)
+                $form.find("input[name=" + k + "]").click();
+        });
+
+        $incnum.val(test.includes.length);
+        $incnum.trigger("input");
+        setValForTable(test.includes, $includes);
+
+        $n_recvs.val(test.receivers.length);
+        $n_recvs.trigger("input");
+        setValForTable(test.receivers, $receivers);
+        function setValForGroups(arr, fields) {
+            /* Example:
+                    arr: {"x":[1,2,3], "y":[4,5,6], "z":[7,8,9]},
+                    groups_fields: [min, 'max', 'num']
+            */
+            Object.keys(arr).forEach(function(k) {
+                fields.forEach(function(f, i) {
+                    $form.find("input[name='" + k + f + "']").val(arr[k][i]);
+                });
+            });
+        }
+        function setValForTable(arr, table) {
+            table.find("tbody tr").each(function(i) {
+                $(this).find("input").each(function(j) {
+                    $(this).val(arr[i][j]);
+                });
+            });
+        }
+    }
+
+    // !!! TODO uncomment to make all fields of form as 'required'
+    //$form.find("input[type='number']").prop("required", true);
+    defaultForm();
+    PlotsD3($main_graph.width(), $main_graph.height());
 });
+
+/*['x', 'y', 'z'].forEach(function(axis_name) {
+    var axis_arr = [];
+    ['min', 'max', 'num'].forEach(function(m) {
+        axis_arr.push(parseFloat($form.find("input[name='" + axis_name + m + "']").val()));
+    });
+    data.axis[axis_name] = axis_arr;
+});*/
+/*$includes.find("tbody tr").each(function() {
+    var include = [];
+    $(this).find("input").each(function() {
+        include.push(parseFloat($(this).val()));
+    });
+    data.includes.push(include);
+});
+$receivers.find("tbody tr").each(function() {
+    var receiver = [];
+    $(this).find("input").each(function() {
+        receiver.push(parseFloat($(this).val()));
+    });
+    data.receivers.push(receiver);
+});*/
+/*['alpha', 'gamma'].forEach(function(reg_name) {
+    var reg_arr = [];
+    if($form.find("input[name='use_" + reg_name + "']").prop("checked")) {
+        ['0', '_step', '_coeff'].forEach(function(m) {
+            reg_arr.push(parseFloat($form.find("input[name='" + reg_name + m + "']").val()));
+        });
+    }
+    data.config[reg_name] = reg_arr;
+});*/

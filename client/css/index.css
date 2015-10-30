@@ -43,6 +43,7 @@ main > * {
     margin: 0;
 }
 aside > section {
+    /*position: relative;*/
     padding: 0 10px 10px;
     /* border-radius: 4px; */
     margin: 20px 10px 10px;
@@ -94,6 +95,27 @@ fieldset {
 #includes thead, #receivers thead{
     font-size: 10px;
     text-align: center;
+}
+.tabs {
+    list-style: none;
+    display: flex;
+    float: right;
+    height: 100%;
+    margin: 0;
+    align-items: center;
+    cursor: default;
+}
+.tabs li {
+    float: right;
+    margin: 0 10px;
+    color: #E0E0E0;
+    cursor: pointer;
+}
+.tabs li:hover {
+    color: #fff;
+}
+aside > section {
+    z-index: 11;
 }
 .cell {
     /*fill: #fff;*/

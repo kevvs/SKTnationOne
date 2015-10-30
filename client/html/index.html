@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>KEVVS :: SKTnationOne project</title>
@@ -13,75 +13,83 @@
     <script src="/js/d3.min.js"></script>
     <script src="/js/index.js"></script>
     <link rel="shortcut icon" href="favicon.ico">
-  </head>
-  <body>
-    <header><h1>Магниторазведка</h1></header>
+</head>
+<body>
+    <header>
+        <h1>Магниторазведка</h1>
+        <ul class="tabs" id="examples">
+            <li data-file="test1.json">Тест 1</li>
+            <li data-file="test2.json">Тест 2</li>
+            <li data-file="test3.json">Тест 3</li>
+        </ul>
+    </header>
     <main>
-      <section>
-          <div id="main-graph"></div>
-      </section>
-      <aside id="panel-settings">
         <section>
-            <h2>Настройки</h2>
-            <form id="myform" method="post" >
-                <fieldset>
-                    Координаты рассматриваемой сетки и число ячеек:<br>
-                    Ось X от <input name="xmin" type="text"> до <input name="xmax" type="text"> , <input name="xnum" type="text"><br>
-                    Ось Y от <input name="ymin" type="text"> до <input name="ymax" type="text"> , <input name="ynum" type="text"><br>
-                    Ось Z от <input name="zmin" type="text"> до <input name="zmax" type="text"> , <input name="znum" type="text"><br>
-                </fieldset>
-                <fieldset>
-                    Число закрашенных(?) областей: <input id="incnum" type="number" value="1" min="1">
-                    <table id="includes">
-                        <!-- Заголовки //-->
-                        <thead>
-                            <td scope="col">&#8194; min(x)</td>
-                            <td scope="col">&#8194; max(x)</td>
-                            <td scope="col">&#8194; min(y)</td>
-                            <td scope="col">&#8194; max(y)</td>
-                            <td scope="col">&#8194; min(z)</td>
-                            <td scope="col">&#8194; max(z)</td>
-                            <td scope="col">&#8194; кол.X</td>
-                            <td scope="col">&#8194; кол.Y</td>
-                            <td scope="col">&#8194; кол.Z</td>
-                        </thead>
-                        <!-- Сюда будем добавлять //-->
-                        <tbody></tbody>
-                    </table>
-                </fieldset>
-                <fieldset>
-                    Количество приёмников: <input id="n_receivers" type="number" value="1" min="1">
-                    <table id="receivers">
-                        <!-- Заголовки //-->
-                        <thead>
-                            <tr>
-                                <td scope="col">координата x &#8194;</td>
-                                <td scope="col">координата y &#8194;</td>
-                                <td scope="col">координата z &#8194;</td>
-                            </tr>
-                        </thead>
-                        <!-- Сюда будем добавлять строки //-->
-                        <tbody></tbody>
-                    </table>
-                </fieldset>
-                <fieldset>
-                    <input class="use_parap_reg" type="checkbox" name="use_alpha"> использовать регуляризацию по &#945;<br>
-                    <input name="alpha0" size="10" type="text"> начальное значение &#945;<br>
-                    <input name="dalpha" size="10" type="text"> шаг увеличения &#945;<br>
-                    <input name="alpha_coeff" size="10" type="text"> во сколько раз может возрасти значение функционала<br>
-                </fieldset>
-                <fieldset>
-                    <input class="use_parap_reg" type="checkbox" name="use_gamma"> использовать регуляризацию по &#947;<br>
-                    <input name="gamma0" size="10" type="text"> начальное значение &#947;<br>
-                    <input name="dgamma" size="10" type="text"> шаг увеличения &#947;<br>
-                    <input name="gamma_coeff" size="10" type="text"> на сколько порядков может возрасти значение функционала<br>
-                    <input name="gamma_diff" size="10" type="text"> разница между соседями, которую считаем уже разницей(?)<br>
-                </fieldset>
-                <fieldset>
-                    <input type="submit"> <input type=reset>
-                </fieldset>
-            </form>
+            <div id="main-graph"></div>
         </section>
-    </aside>
-  </body>
+        <aside id="panel-settings">
+            <section>
+                <h2>Настройки</h2>
+                <form id="task" method="post" required>
+                    <fieldset>
+                        Координаты рассматриваемой сетки и число ячеек:<br>
+                        Ось X от <input name="xmin" type="number" step="any"> до <input name="xmax" type="number" step="any"> , <input name="xnum" type="number" step="any"><br>
+                        Ось Y от <input name="ymin" type="number" step="any"> до <input name="ymax" type="number" step="any"> , <input name="ynum" type="number" step="any"><br>
+                        Ось Z от <input name="zmin" type="number" step="any"> до <input name="zmax" type="number" step="any"> , <input name="znum" type="number" step="any"><br>
+                    </fieldset>
+                    <fieldset>
+                        Число закрашенных(?) областей: <input id="incnum" type="number" value="1" min="1">
+                        <table id="includes">
+                            <!-- Заголовки //-->
+                            <thead>
+                                <td>min(x)</td>
+                                <td>max(x)</td>
+                                <td>min(y)</td>
+                                <td>max(y)</td>
+                                <td>min(z)</td>
+                                <td>max(z)</td>
+                                <td>кол.X</td>
+                                <td>кол.Y</td>
+                                <td>кол.Z</td>
+                            </thead>
+                            <!-- Сюда будем добавлять //-->
+                            <tbody></tbody>
+                        </table>
+                    </fieldset>
+                    <fieldset>
+                        Количество приёмников: <input id="n_receivers" type="number" value="1" min="1">
+                        <table id="receivers">
+                            <!-- Заголовки //-->
+                            <thead>
+                                <tr>
+                                    <td>координата x</td>
+                                    <td>координата y</td>
+                                    <td>координата z</td>
+                                </tr>
+                            </thead>
+                            <!-- Сюда будем добавлять строки //-->
+                            <tbody></tbody>
+                        </table>
+                    </fieldset>
+                    <fieldset>
+                        <input class="use_parap_reg" type="checkbox" name="alpha"> использовать регуляризацию по &#945;<br>
+                        <input name="alpha0" type="number" step="any"> начальное значение &#945;<br>
+                        <input name="alpha_step" type="number" step="any"> шаг увеличения &#945;<br>
+                        <input name="alpha_coeff" type="number" step="any"> во сколько раз может возрасти значение функционала<br>
+                    </fieldset>
+                    <fieldset>
+                        <input class="use_parap_reg" type="checkbox" name="gamma"> использовать регуляризацию по &#947;<br>
+                        <input name="gamma0" type="number" step="any"> начальное значение &#947;<br>
+                        <input name="gamma_step" type="number" step="any"> шаг увеличения &#947;<br>
+                        <input name="gamma_coeff" type="number" step="any"> на сколько порядков может возрасти значение функционала<br>
+                        <input name="gamma_diff" type="number" step="any"> разница между соседями, которую считаем уже разницей(?)<br>
+                    </fieldset>
+                    <fieldset>
+                        <input type="submit"> <input type=reset>
+                    </fieldset>
+                </form>
+            </section>
+        </aside>
+    </main>
+</body>
 </html>
