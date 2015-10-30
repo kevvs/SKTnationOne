@@ -96,17 +96,17 @@ $(document).ready(function() {
                 x.domain([min_x, max_x]);
                 y.domain([min_y, max_y]);
 
-                // generate data for axis
-                var xAxisData = [], yAxisData = [];
+                // generate data for area
+                var xareaData = [], yareaData = [];
                 for(var i = Math.round(min_x/step_x); i < Math.round(max_x/step_x); i++)
-                    xAxisData.push(i*step_x);
+                    xareaData.push(i*step_x);
                 for(var i = Math.round(min_y/step_y); i < Math.round(max_y/step_y); i++)
-                    yAxisData.push(i*step_y);
+                    yareaData.push(i*step_y);
 
-                // draw axis for x
-                var groupAxis = svg.append("g");
-                groupAxis.selectAll(".vlines")
-                    .data(xAxisData).enter()
+                // draw area for x
+                var grouparea = svg.append("g");
+                grouparea.selectAll(".vlines")
+                    .data(xareaData).enter()
                     .append("line")
                     .attr("class","vlines")
                     .style("stroke-dasharray", ("1, 3"))
@@ -115,9 +115,9 @@ $(document).ready(function() {
                     .attr("x2", function(d,i){ return x(d);})
                     .attr("y2", height);
 
-                // draw axis for y
-                groupAxis.selectAll(".hlines")
-                    .data(yAxisData).enter()
+                // draw area for y
+                grouparea.selectAll(".hlines")
+                    .data(yareaData).enter()
                     .append("line")
                     .attr("class","hlines")
                     .style("stroke-dasharray", ("1, 3"))
@@ -126,8 +126,8 @@ $(document).ready(function() {
                     .attr("x2", width)
                     .attr("y2", function(d,i){ return y(d);});
 
-                // draw zero-axis
-                groupAxis.selectAll(".vmainline")
+                // draw zero-area
+                grouparea.selectAll(".vmainline")
                     .data([x(0)]).enter()
                     .append("line")
                     .attr("class","vmainline")
@@ -136,7 +136,7 @@ $(document).ready(function() {
                     .attr("x2", function(d,i){ return d;})
                     .attr("y2", height);
 
-                groupAxis.selectAll(".hmainline")
+                grouparea.selectAll(".hmainline")
                     .data([y(0)]).enter()
                     .append("line")
                     .attr("class","hmainline")
@@ -153,20 +153,20 @@ $(document).ready(function() {
                     .attr("y", padding)
                     .attr("d", line);
 
-                // draw labels for axis
-                var groupLabelsAxis = svg.append("g");
-                groupLabelsAxis.selectAll(".x-axis-text")
-                    .data(xAxisData).enter()
+                // draw labels for area
+                var groupLabelsarea = svg.append("g");
+                groupLabelsarea.selectAll(".x-area-text")
+                    .data(xareaData).enter()
                     .append("text")
-                    .attr("class", "x-axis-text")
+                    .attr("class", "x-area-text")
                     .text(function(d, i) { return d; })
                     .attr("x", function(d, i) { return x(d) + 5; })
                     .attr("y", function(d, i) { return y(0) - 5; });
 
-                groupLabelsAxis.selectAll(".y-axis-text")
-                    .data(yAxisData).enter()
+                groupLabelsarea.selectAll(".y-area-text")
+                    .data(yareaData).enter()
                     .append("text")
-                    .attr("class", "y-axis-text")
+                    .attr("class", "y-area-text")
                     .text(function(d, i) { return d == 0 ? '': d; })
                     .attr("x", function(d, i) { return x(0) + 5; })
                     .attr("y", function(d, i) { return y(d) - 5; });
@@ -233,11 +233,12 @@ $(document).ready(function() {
         e.preventDefault();
         var test = getTest();
         //TODO make request "/task"
+        console.log(JSON.stringify(test));
     });
 
     function getTest() {
-        var data = {axis: {}, includes: [], receivers: [], config: {}};
-        data.axis = getValFromGroups(['x', 'y', 'z'], ['min', 'max', 'num']);
+        var data = {area: {}, includes: [], receivers: [], config: {}};
+        data.area = getValFromGroups(['x', 'y', 'z'], ['min', 'max', 'num']);
         var checked_group = $usr_param_reg.map(function() {
                                     if($(this).prop("checked"))
                                         return $(this).attr("name");
@@ -246,7 +247,6 @@ $(document).ready(function() {
         data.includes  = getValFromTable($includes);
         data.receivers = getValFromTable($receivers);
         //console.log(data);
-        console.log(JSON.stringify(data));
         function getValFromGroups(groups_names, fields) {
             var groups = {};
             groups_names.forEach(function(name) {
@@ -272,7 +272,7 @@ $(document).ready(function() {
     function setTest(test) {
         $form.trigger('reset');
 
-        setValForGroups(test.axis, ['min', 'max', 'num']);
+        setValForGroups(test.area, ['min', 'max', 'num']);
         setValForGroups(test.config, ['0', '_step', '_coeff']);
 
         Object.keys(test.config).forEach(function(k) {
@@ -308,38 +308,7 @@ $(document).ready(function() {
     }
 
     // !!! TODO uncomment to make all fields of form as 'required'
-    //$form.find("input[type='number']").prop("required", true);
+    $form.find("input[type='number']").prop("required", true);
     defaultForm();
     PlotsD3($main_graph.width(), $main_graph.height());
 });
-
-/*['x', 'y', 'z'].forEach(function(axis_name) {
-    var axis_arr = [];
-    ['min', 'max', 'num'].forEach(function(m) {
-        axis_arr.push(parseFloat($form.find("input[name='" + axis_name + m + "']").val()));
-    });
-    data.axis[axis_name] = axis_arr;
-});*/
-/*$includes.find("tbody tr").each(function() {
-    var include = [];
-    $(this).find("input").each(function() {
-        include.push(parseFloat($(this).val()));
-    });
-    data.includes.push(include);
-});
-$receivers.find("tbody tr").each(function() {
-    var receiver = [];
-    $(this).find("input").each(function() {
-        receiver.push(parseFloat($(this).val()));
-    });
-    data.receivers.push(receiver);
-});*/
-/*['alpha', 'gamma'].forEach(function(reg_name) {
-    var reg_arr = [];
-    if($form.find("input[name='use_" + reg_name + "']").prop("checked")) {
-        ['0', '_step', '_coeff'].forEach(function(m) {
-            reg_arr.push(parseFloat($form.find("input[name='" + reg_name + m + "']").val()));
-        });
-    }
-    data.config[reg_name] = reg_arr;
-});*/
