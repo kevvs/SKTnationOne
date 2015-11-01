@@ -253,6 +253,9 @@ $(document).ready(function() {
             data.area.push($form.find("input[name='"+t+"']").val());
         });
         data.config    = $.extend({alpha: [] , gamma: []}, getValFromGroups(checked_group, ['0', '_step', '_coeff']));
+        if(checked_group.indexOf("gamma") > -1) {
+            data.config.gamma.push($form.find("input[name='gamma_diff']").val());
+        }
         data.includes  = getValFromTable($includes);
         data.receivers = getValFromTable($receivers);
         function getValFromGroups(groups_names, fields) {
@@ -284,8 +287,8 @@ $(document).ready(function() {
         ['xmin', 'xmax', 'ymin', 'ymax','zmin', 'zmax', 'xnum', 'ynum', 'znum'].forEach(function(t, i) {
             $form.find("input[name='"+t+"']").val(test.area[i]);
         });
-        setValForGroups(test.config, ['0', '_step', '_coeff']);
-
+        setValForGroups(test.config, ['0', '_step', '_coeff', '_diff']);
+        
         Object.keys(test.config).forEach(function(k) {
             if(test.config[k].length == 0)
                 $form.find("input[name=" + k + "]").click();
