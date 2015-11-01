@@ -31,10 +31,10 @@ function convertDataToString(data){
 	}
 	ret = ret + "\n";
 	
-	ret = ret + ((data.config.alpha.length > 0) ? "1" : "0") + "\n" + 
+	ret = ret + ((data.config.alpha && data.config.alpha.length > 0) ? "1" : "0") + "\n" + 
 				((data.config.gamma && data.config.gamma.length > 0) ? "1" : "0") + "\n"
 	
-	if(data.config.alpha.length > 0) {
+	if(typeof(data.config.alpha) != "undefined" && data.config.alpha.length > 0) {
 		ret = ret + data.config.alpha[0] + "\n" +
 				data.config.alpha[1] + "\n" +
 				data.config.alpha[2] + "\n";

@@ -23,8 +23,9 @@ var app = express();
 app.set('port', port);
 app.use(express.favicon());
 app.use(express.logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded());
+var bodyParser = require('body-parser');
+app.use(bodyParser.json({limit: '50mb', parameterLimit: 10000}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true, parameterLimit: 10000}));
 app.use(express.session({secret: 'nFNnnIBGgf'}));
 app.use(app.router);
 
@@ -55,8 +56,8 @@ var task = baseTask;
 
 var inputPath = "..\\console-application\\input.txt";
 var outputPath = "..\\console-application\\output.txt";
-var bxCPath = "..\console-application\bx_calculated.txt";
-var bxAPath = "..\console-application\bx_analytical.txt";
+var bxCPath = "..\\console-application\\bx_calculated.txt";
+var bxAPath = "..\\console-application\\bx_analytical.txt";
 
 app.post('/api/1.0/task', function (req, res) {
   task = baseTask; // reset server state
