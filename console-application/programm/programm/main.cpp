@@ -7,8 +7,6 @@ int main()
 	bla.calc();
 
 	cout << "Hello World!" << endl;
-#if defined _WIN32
-	system("pause");
-#endif
+
 	return 0;
 }
