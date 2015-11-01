@@ -1,43 +1,50 @@
 function convertDataToString(data){
-  function fullCordinates(coord){
-    return coord.xmin + " " + coord.xmax + "\n" +
-      coord.ymin + " " + coord.ymax + "\n" +
-      coord.zmin + " " + coord.zmax + "\n" +
-      coord.xnum + " " + coord.ynum + " " + coord.znum + "\n";
+  function fullCoordinates(coord){
+	var result = "";
+	for(var i in coord) {
+		result += coord[i] + " ";
+	}
+    return result + "\n";
   }
 
   function getReciever(r){
-    return r.x + "\t" + r.y + "\t" + r.z + "\t" + "\n";
+    return r[0] + "\t" + r[1] + "\t" + r[2] + "\t" + "\n";
   }
 	
 	var ret;
-	ret = "" + fullCordinates(data.area) + "\n" + 
-		data.area.incnum + "\n" + "\n";
 	
-	var incn = data.area.incnum;
+	var incn = data.includes.length;
+	
+	ret = "" + fullCoordinates(data.area) + "\n" + incn + "\n\n";
+	
+	
 	for(var i = 0; i < incn; i++) {
-		ret = ret + fullCoordinates(data.area.includes[i]) + "\n";
+		ret = ret + fullCoordinates(data.includes[i]) + "\n";
 	}
 	
-	ret = ret + data.receivers.N + "\n";
+	var N = data.receivers.length;
 	
-	var N = data.receivers.N;
+	ret = ret + N + "\n";
 	
 	for(var i = 0; i < N; i++) {
-		ret = ret + getReciever(data.recievers.rcvr[i]);
+		ret = ret + getReciever(data.recievers[i]);
 	}
 	ret = ret + "\n";
 	
-	ret = ret + data.config.use_alpha + "\n" + 
-				data.config.use_gamma + "\n" +
-				data.config.alpha0 + "\n" +
-				data.config.dalpha + "\n" +
-				data.config.alpha_coeff + "\n" +
-				data.config.gamma0 + "\n" +
-				data.config.dgamma + "\n" +
-				data.config.gamma_coeff + "\n" +
-				data.config.gamma_diff + "\n";
-				
+	ret = ret + ((data.config.alpha.length > 0) ? "1" : "0") + "\n" + 
+				((data.config.gamma && data.config.gamma.length > 0) ? "1" : "0") + "\n"
+	
+	if(data.config.alpha.length > 0) {
+		ret = ret + data.config.alpha[0] + "\n" +
+				data.config.alpha[1] + "\n" +
+				data.config.alpha[2] + "\n";
+	}
+	if(typeof(data.config.gamma) != "undefined" && data.config.gamma.length > 0) {
+		ret = ret + data.config.gamma[0] + "\n" +
+				data.config.gamma[1] + "\n" +
+				data.config.gamma[2] + "\n" +
+				data.config.gamma[3] + "\n";
+	}
 	return ret;		
 }
 

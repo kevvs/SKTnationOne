@@ -41,6 +41,8 @@ var baseTask = {
     "converted-string": null
   },
   output: null,
+  bx_calculated: null,
+  bx_analytical: null,
   console : {
     command: "./a.exe input.txt output.txt",
     stdout: null,
@@ -53,10 +55,13 @@ var task = baseTask;
 
 var inputPath = "../console-application/input.txt";
 var outputPath = "../console-application/output.txt";
+var bxCPath = "../console-application/bx_calculated.txt";
+var bxAPath = "../console-application/bx_analytical.txt";
 
 app.post('/api/1.0/task', function (req, res) {
   task = baseTask; // reset server state
   var data = req.body;
+  console.log(data);
   task.status = "saving";
   task.started = new Date();
   task.input.json = data;
@@ -74,6 +79,8 @@ app.post('/api/1.0/task', function (req, res) {
       return;
     }
     task.output = fs.readFileSync(outputPath);
+	task.bx_calculated = fs.readFileSync(bxCPath);
+	task.bx_analytical = fs.readFileSync(bxAPath);
     task.finished = new Date();
     task.status = "finished";
   });
