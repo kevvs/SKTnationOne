@@ -76,7 +76,7 @@ app.post('/api/1.0/task', function (req, res) {
     if (err !== null) {
       console.log('exec error: ' + err);
       task.status = "failed";
-      task.console.exec_error = err.split("\r\n");
+      task.console.exec_error = err;
       return;
     }
     function stringToArrArr(str, must_split_in) {
