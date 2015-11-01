@@ -225,6 +225,7 @@ $(document).ready(function() {
     $form.bind('reset', function(e) {
         e.preventDefault();
         $form.find("input[type='number']").val("");
+        $form.find("input[type='text']").val("");
         $usr_param_reg.prop("checked", false);
         defaultForm();
     });
@@ -252,7 +253,7 @@ $(document).ready(function() {
             var groups = {};
             groups_names.forEach(function(name) {
                 groups[name] = fields.map(function(m) {
-                         return parseFloat($form.find("input[name='" + name + m + "']").val());
+                         return $form.find("input[name='" + name + m + "']").val();
                     });
             });
             return groups;
@@ -262,7 +263,7 @@ $(document).ready(function() {
             table.find("tbody tr").each(function() {
                 info.push($(this).find("input")
                                  .map(function() {
-                                    return parseFloat($(this).val());
+                                    return $(this).val();
                                  })
                                  .get());
             });
@@ -313,6 +314,7 @@ $(document).ready(function() {
 
     // !!! TODO uncomment to make all fields of form as 'required'
     $form.find("input[type='number']").prop("required", true);
+    $form.find("input[type='text']").prop("required", true);
     defaultForm();
     PlotsD3($main_graph.width(), $main_graph.height());
 });

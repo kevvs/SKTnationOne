@@ -33,9 +33,9 @@
                 <form id="task" method="post" required>
                     <fieldset>
                         Координаты рассматриваемой сетки и число ячеек:<br>
-                        Ось X от <input name="xmin" type="number" step="any"> до <input name="xmax" type="number" step="any"> , <input name="xnum" type="number" step="any"><br>
-                        Ось Y от <input name="ymin" type="number" step="any"> до <input name="ymax" type="number" step="any"> , <input name="ynum" type="number" step="any"><br>
-                        Ось Z от <input name="zmin" type="number" step="any"> до <input name="zmax" type="number" step="any"> , <input name="znum" type="number" step="any"><br>
+                        Ось X от <input name="xmin" type="text"> до <input name="xmax" type="text"> , <input name="xnum" type="text"><br>
+                        Ось Y от <input name="ymin" type="text"> до <input name="ymax" type="text"> , <input name="ynum" type="text"><br>
+                        Ось Z от <input name="zmin" type="text"> до <input name="zmax" type="text"> , <input name="znum" type="text"><br>
                     </fieldset>
                     <fieldset>
                         Число закрашенных(?) областей: <input id="incnum" type="number" value="1" min="1">
@@ -73,16 +73,16 @@
                     </fieldset>
                     <fieldset>
                         <input class="use_parap_reg" type="checkbox" name="alpha"> использовать регуляризацию по &#945;<br>
-                        <input name="alpha0" type="number" step="any"> начальное значение &#945;<br>
-                        <input name="alpha_step" type="number" step="any"> шаг увеличения &#945;<br>
-                        <input name="alpha_coeff" type="number" step="any"> во сколько раз может возрасти значение функционала<br>
+                        <input name="alpha0" type="text"> начальное значение &#945;<br>
+                        <input name="alpha_step" type="text"> шаг увеличения &#945;<br>
+                        <input name="alpha_coeff" type="text"> во сколько раз может возрасти значение функционала<br>
                     </fieldset>
                     <fieldset>
                         <input class="use_parap_reg" type="checkbox" name="gamma"> использовать регуляризацию по &#947;<br>
-                        <input name="gamma0" type="number" step="any"> начальное значение &#947;<br>
-                        <input name="gamma_step" type="number" step="any"> шаг увеличения &#947;<br>
-                        <input name="gamma_coeff" type="number" step="any"> на сколько порядков может возрасти значение функционала<br>
-                        <input name="gamma_diff" type="number" step="any"> разница между соседями, которую считаем уже разницей(?)<br>
+                        <input name="gamma0" type="text"> начальное значение &#947;<br>
+                        <input name="gamma_step" type="text"> шаг увеличения &#947;<br>
+                        <input name="gamma_coeff" type="text"> на сколько порядков может возрасти значение функционала<br>
+                        <input name="gamma_diff" type="text"> разница между соседями, которую считаем уже разницей(?)<br>
                     </fieldset>
                     <fieldset>
                         <input type="submit"> <input type=reset>
