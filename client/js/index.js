@@ -237,16 +237,17 @@ $(document).ready(function() {
     });
 
     function getTest() {
-        var data = {area: {}, includes: [], receivers: [], config: {}};
-        data.area = getValFromGroups(['x', 'y', 'z'], ['min', 'max', 'num']);
+        var data = {area: [], includes: [], receivers: [], config: {}};
         var checked_group = $usr_param_reg.map(function() {
                                     if($(this).prop("checked"))
                                         return $(this).attr("name");
                                 }).get();
+        ['xmin', 'xmax', 'ymin', 'ymax','zmin', 'zmax', 'xnum', 'ynum', 'znum'].forEach(function(t) {
+            data.area.push($form.find("input[name='"+t+"']").val());
+        });
         data.config    = $.extend({alpha: [] , gamma: []}, getValFromGroups(checked_group, ['0', '_step', '_coeff']));
         data.includes  = getValFromTable($includes);
         data.receivers = getValFromTable($receivers);
-        //console.log(data);
         function getValFromGroups(groups_names, fields) {
             var groups = {};
             groups_names.forEach(function(name) {
