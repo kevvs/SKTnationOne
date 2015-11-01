@@ -27,7 +27,7 @@ function convertDataToString(data){
 	ret = ret + N + "\n";
 	
 	for(var i = 0; i < N; i++) {
-		ret = ret + getReciever(data.recievers[i]);
+		ret = ret + getReciever(data.receivers[i]);
 	}
 	ret = ret + "\n";
 	

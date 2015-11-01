@@ -44,7 +44,7 @@ var baseTask = {
   bx_calculated: null,
   bx_analytical: null,
   console : {
-    command: "./a.exe input.txt output.txt",
+    command: "a.exe input.txt output.txt",
     stdout: null,
     stderr: null,
     exec_error: null
@@ -53,10 +53,10 @@ var baseTask = {
 
 var task = baseTask;
 
-var inputPath = "../console-application/input.txt";
-var outputPath = "../console-application/output.txt";
-var bxCPath = "../console-application/bx_calculated.txt";
-var bxAPath = "../console-application/bx_analytical.txt";
+var inputPath = "..\\console-application\\input.txt";
+var outputPath = "..\\console-application\\output.txt";
+var bxCPath = "..\console-application\bx_calculated.txt";
+var bxAPath = "..\console-application\bx_analytical.txt";
 
 app.post('/api/1.0/task', function (req, res) {
   task = baseTask; // reset server state
@@ -69,10 +69,10 @@ app.post('/api/1.0/task', function (req, res) {
   task.input["converted-string"] = input;
   fs.writeFileSync(inputPath, input);
   task.status = "started";
-  exec("cd ../console-application && " + task.console.command, function (err, so, se) {
+  exec("cd ..\\console-application && " + task.console.command, function (err, so, se) {
     console.log('stdout: ' + so); task.console.stdout = so;
     console.log('stderr: ' + se); task.console.stderr = se;
-    if (error !== null) {
+    if (err !== null) {
       console.log('exec error: ' + err);
       task.status = "failed";
       task.console.exec_error = err;
