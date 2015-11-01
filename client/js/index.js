@@ -273,7 +273,10 @@ $(document).ready(function() {
     function setTest(test) {
         $form.trigger('reset');
 
-        setValForGroups(test.area, ['min', 'max', 'num']);
+        //setValForGroups(test.area, ['min', 'max', 'num']);
+        ['xmin', 'xmax', 'ymin', 'ymax','zmin', 'zmax', 'xnum', 'ynum', 'znum'].forEach(function(t, i) {
+            $form.find("input[name='"+t+"']").val(test.area[i]);
+        });
         setValForGroups(test.config, ['0', '_step', '_coeff']);
 
         Object.keys(test.config).forEach(function(k) {
