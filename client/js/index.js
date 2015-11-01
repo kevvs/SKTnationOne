@@ -235,6 +235,12 @@ $(document).ready(function() {
         var test = getTest();
         //TODO make request "/task"
         console.log(JSON.stringify(test));
+		$.ajax({
+			type: "POST",
+            dataType: "json",
+            url: "/api/1.0/task",
+            data: test
+        });
     });
 
     function getTest() {
