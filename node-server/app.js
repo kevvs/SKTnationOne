@@ -71,17 +71,29 @@ app.post('/api/1.0/task', function (req, res) {
   fs.writeFileSync(inputPath, input);
   task.status = "started";
   exec("cd ..\\console-application && " + task.console.command, function (err, so, se) {
-    console.log('stdout: ' + so); task.console.stdout = so;
-    console.log('stderr: ' + se); task.console.stderr = se;
+    console.log('stdout: ' + so); task.console.stdout = so.split("\r\n");
+    console.log('stderr: ' + se); task.console.stderr = se.split("\r\n");
     if (err !== null) {
       console.log('exec error: ' + err);
       task.status = "failed";
-      task.console.exec_error = err;
+      task.console.exec_error = err.split("\r\n");
       return;
     }
-    task.output = fs.readFileSync(outputPath);
-	task.bx_calculated = fs.readFileSync(bxCPath);
-	task.bx_analytical = fs.readFileSync(bxAPath);
+    function stringToArrArr(str, must_split_in) {
+        str = str.split("\r\n");
+        str.pop();
+        for(var i in str) {
+            str[i] = str[i].split("\t");
+            if(must_split_in) str[i].pop();
+        }
+        return str;
+    }
+    var output = fs.readFileSync(outputPath).toString();
+    var bxc = fs.readFileSync(bxCPath).toString();
+    var bxa = fs.readFileSync(bxAPath).toString();
+    task.output = stringToArrArr(output, true);
+    task.bx_calculated = stringToArrArr(bxc, false);
+    task.bx_analytical = stringToArrArr(bxa, false);
     task.finished = new Date();
     task.status = "finished";
   });

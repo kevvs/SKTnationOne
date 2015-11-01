@@ -10,7 +10,8 @@
   "dependencies": {
     "express": "3.x",
     "formidable": "*",
-    "log4js": "~0.6.20"
+    "log4js": "~0.6.20",
+    "body-parser": "*"
   },
   "private": true
 }
