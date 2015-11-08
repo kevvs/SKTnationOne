@@ -60,9 +60,9 @@ void C_Inverse::input(const string &fn_input){
 		// Считаем аналитику
 		receivers[i].second = ar.get_B(receivers[i].first);
 		// Выводим аналитику
-		//ofs << receivers[i].first.x << "\t" << receivers[i].second.x << endl;
-    //ofs << receivers[i].first.x << "\t" << receivers[i].second.x << endl;
-    ofs << receivers[i].first.z << "\t" << receivers[i].second.z << endl;
+		ofs << receivers[i].first.x << "\t" << receivers[i].second.x << endl;
+    //ofs << receivers[i].first.y << "\t" << receivers[i].second.y << endl;
+    //ofs << receivers[i].first.z << "\t" << receivers[i].second.z << endl;
 	}
 	//ifs.close();
 	ofs.close();
@@ -101,16 +101,16 @@ void C_Inverse::make_L(){
         double r2 = 1.0 / (r * r);
         double bla = (ar.cubes[mu].jacobian * ar.cubes[mu].gauss_weights[j]) / (4.0 * M_PI * r * r * r);
 
-        L[3 * mu][i][0] += 0.0;//bla * (3.0 * dx * dx * r2 - 1.0);
-        L[3 * mu][i][1] += 0.0;//bla * (3.0 * dx * dy * r2);
+        L[3 * mu][i][0] += bla * (3.0 * dx * dx * r2 - 1.0);
+        L[3 * mu][i][1] += bla * (3.0 * dx * dy * r2);
         L[3 * mu][i][2] += bla * (3.0 * dx * dz * r2);
 
-        L[3 * mu + 1][i][0] += 0.0;//bla * (3.0 * dx * dy * r2);
-        L[3 * mu + 1][i][1] += 0.0;//bla * (3.0 * dy * dy * r2 - 1.0);
+        L[3 * mu + 1][i][0] += bla * (3.0 * dx * dy * r2);
+        L[3 * mu + 1][i][1] += bla * (3.0 * dy * dy * r2 - 1.0);
         L[3 * mu + 1][i][2] += bla * (3.0 * dy * dz * r2);
 
-        L[3 * mu + 2][i][0] += 0.0;//bla * (3.0 * dx * dz * r2);
-        L[3 * mu + 2][i][1] += 0.0;//bla * (3.0 * dy * dz * r2);
+        L[3 * mu + 2][i][0] += bla * (3.0 * dx * dz * r2);
+        L[3 * mu + 2][i][1] += bla * (3.0 * dy * dz * r2);
         L[3 * mu + 2][i][2] += bla * (3.0 * dz * dz * r2 - 1.0);
 			}
 		}
@@ -158,8 +158,8 @@ double C_Inverse::calc_functional_FI(const vector<double> &solution){
 		C_Vector3 d = b_a - b_c;
     //f += d.x * d.x;
     //f += d.y * d.y;
-		f += d.z * d.z;
-    //f += d.x * d.x + d.y * d.y + d.z * d.z;
+		//f += d.z * d.z;
+    f += d.x * d.x + d.y * d.y + d.z * d.z;
 	}
 	return f;
 }
@@ -182,7 +182,8 @@ double C_Inverse::calc_functional_FI_alpha_gamma(const vector<double> &solution)
 				C_Vector3 tmp = ar.cubes[k].p - ar.cubes[k].neighbor[a] -> p;
         //sum = sum + C_Vector3(tmp.x * tmp.x, 0.0, 0.0);
         //sum = sum + C_Vector3(0.0, tmp.y * tmp.y, 0.0);
-				sum = sum + C_Vector3(0.0, 0.0, tmp.z * tmp.z);
+				//sum = sum + C_Vector3(0.0, 0.0, tmp.z * tmp.z);
+        sum = sum + C_Vector3(tmp.x * tmp.x, tmp.y * tmp.y, tmp.z * tmp.z);
 			}
 		}
 		f += sum * gamma[k];
@@ -347,7 +348,7 @@ void C_Inverse::calc(){
     }
     ofstream ofs2("bx_calculated.txt");
     for(size_t i = 0; i < N; i++){
-        ofs2 << receivers[i].first.z << "\t" << ar.get_B(receivers[i].first).z << endl;
+        ofs2 << receivers[i].first.x << "\t" << ar.get_B(receivers[i].first).x << endl;
     }
     ofs2.close();
 
