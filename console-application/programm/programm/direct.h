@@ -1,20 +1,7 @@
-#ifndef DIRECT_H
-#define DIRECT_H
+#ifndef __DIRECT_H
+#define __DIRECT_H
 
-#include <iostream>
-#include <fstream>
-#include <cmath>
-#include <vector>
-#include <string>
-#include <cstdlib>
-#include "point.h"
 #include "vector3.h"
-
-using namespace std;
-
-#if !defined M_PI
-#define M_PI 3.14159265358979323846
-#endif
 
 /*   _____________
 *  /|6          /|7    ^ z
@@ -38,44 +25,44 @@ using namespace std;
 * 5 - сверху
 */
 
-class cube
+class C_Cube
 {
 public:
-	point * nodes[8];
-	vector3 p;
+	C_Point * nodes[8];
+	C_Vector3 p;
 	double mes;
-	point barycenter;
-	cube * neighbor[6];
-	cube();
+	C_Point barycenter;
+	C_Cube * neighbor[6];
+	C_Cube();
 	void init();
-	vector3 get_B(point x) const;
+	C_Vector3 get_B(C_Point x) const;
 
 	double gauss_weights[27];
-	point gauss_points[27];
+	C_Point gauss_points[27];
 	double jacobian;
 
 	size_t num;
 };
 
-class include
+class C_Include
 {
 public:
 	double x_min, x_max;
 	double y_min, y_max;
 	double z_min, z_max;
-	vector3 p;
-	bool inside(const cube & p) const;
-	friend istream & operator >> (istream & is, include & a);
+	C_Vector3 p;
+	bool inside(const C_Cube &p) const;
+	friend istream &operator >> (istream &is, C_Include &a);
 };
 
-class area
+class C_Area
 {
 public:
-	vector<point> nodes;
-	vector<cube> cubes;
-	vector3 get_B(point x) const;
-	double get_abs_B(point x) const;
+	vector<C_Point> nodes;
+	vector<C_Cube> cubes;
+	C_Vector3 get_B(C_Point x) const;
+	double get_abs_B(C_Point x) const;
 	void generate(ifstream &ifs);
 };
 
-#endif // DIRECT_H
+#endif // __DIRECT_H

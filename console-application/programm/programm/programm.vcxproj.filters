@@ -67,5 +67,11 @@
     <ClInclude Include="vector3.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="lib.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>

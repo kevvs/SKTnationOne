@@ -1,20 +1,10 @@
-#ifndef INVERSE_H
-#define INVERSE_H
+#ifndef __INVERSE_H
+#define __INVERSE_H
 
-#include <vector>
-#include <array>
-#include <string>
-#include <utility>
-#include <iostream>
-#include <fstream>
-#include "vector3.h"
 #include "direct.h"
 
-using namespace std;
-
-class inverse_config
+struct S_InverseConfig
 {
-public:
 	bool use_alpha;     // Использовать регуляризацию по альфа
 	bool use_gamma;     // Использовать регуляризацию по гамма
 	double alpha0;      // Начальное значение alpha
@@ -24,38 +14,39 @@ public:
 	double dgamma;      // Шаг увеличения gamma
 	double gamma_coeff; // На сколько порядков может возрасти значение функционала
 	double gamma_diff;  // Разница между соседями, которую считаем уже разницей
-	inverse_config();
-	friend istream & operator >> (istream & is, inverse_config & a);
-	friend ostream & operator << (ostream & os, const inverse_config & a);
+  
+  S_InverseConfig();
+	friend istream & operator >> (istream & is, S_InverseConfig &a);
+	friend ostream & operator << (ostream & os, const S_InverseConfig &a);
 };
 
-class inverse
+class C_Inverse
 {
 public:
 	void input(const string &fn_input);//const string & fn_area, const string & fn_receivers, const string & fn_config);
 	void calc();
 
 protected:
-	vector<vector<double> > A;
+	vector<vector<double>> A;
 	vector<double> b;
-	vector<vector<vector3> > L;
+	vector<vector<C_Vector3>> L;
 	size_t K, N;
-	vector<pair<point, vector3> > receivers;
+	vector<pair<C_Point, C_Vector3>> receivers;
 
 	void make_L();
 	void make_A();
 	void make_B();
-	area ar;
+  C_Area ar;
 
 	double alpha;
-	vector<vector3> gamma;
+	vector<C_Vector3> gamma;
 
-	void solve_gauss(vector<vector<double> > & matrix, vector<double> & right_part, vector<double> & solution) const;
-	double calc_functional_FI(const vector <double> & solution);
-	double calc_functional_FI_alpha_gamma(const vector <double> & solution);
+	void solve_gauss(vector<vector<double>> &matrix, vector<double> &right_part, vector<double> &solution) const;
+	double calc_functional_FI(const vector<double> &solution);
+	double calc_functional_FI_alpha_gamma(const vector<double> &solution);
 
-	void print_solution(const vector<double> & solution, const string & filename);
-	inverse_config cfg;
+	void print_solution(const vector<double> &solution, const string &filename);
+  S_InverseConfig cfg;
 };
 
-#endif // INVERSE_H
+#endif // __INVERSE_H
