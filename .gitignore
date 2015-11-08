@@ -78,7 +78,6 @@ crashlytics-build.properties
 *.lib
 
 # Executables
-*.exe
 *.out
 *.app
 
