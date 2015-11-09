@@ -153,7 +153,7 @@ aside > section {
 }
 .cell {
     /*fill: #fff;*/
-    /*stroke: #ccc;*/
+    stroke: #ccc;
 }
 .legend-text,
 .x-area-text,

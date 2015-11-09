@@ -25,11 +25,11 @@ $(document).ready(function() {
                     step1 = (max1 - min1)/n1,
                     step2 = (max2 - min2)/n2;
                 data = Array.apply(null, Array(n)).map(function() { return 0; });
-                var ind1 = Array.apply(null, Array(n1-1)).map(function(_,i) { return i; }),
+                var ind1 = Array.apply(null, Array(n1+1)).map(function(_,i) { return i; }),
                     range1 = d3.scale.quantile()
                                   .domain([min1, max1])
                                   .range(ind1);
-                var ind2 = Array.apply(null, Array(n2-1)).map(function(_,i) { return i; }),
+                var ind2 = Array.apply(null, Array(n2+1)).map(function(_,i) { return n2-i-1; }),
                     range2 = d3.scale.quantile()
                                     .domain([min2, max2])
                                     .range(ind2);
