@@ -134,11 +134,11 @@ $(document).ready(function() {
                         .y(function(d) { return y(d[1]); });
             var data_analytical = task.bx_analytical;
             data_analytical.forEach(function(d, i) {
-                data_analytical[i] = [parseFloat(d[0]), parseFloat(d[1])];
+                data_analytical[i] = [parseFloat(d[0]), -parseFloat(d[1])];
             });
             var data_calculated = task.bx_calculated;
             data_calculated.forEach(function(d, i) {
-                data_calculated[i] = [parseFloat(d[0]), parseFloat(d[1])];
+                data_calculated[i] = [parseFloat(d[0]), -parseFloat(d[1])];
             });
             var data = data_analytical;
             //d3.json('bx_analytical.json',function(error,data){
