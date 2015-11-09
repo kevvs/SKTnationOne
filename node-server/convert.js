@@ -40,9 +40,9 @@ function convertDataToString(data){
 				data.config.alpha[2] + "\n";
 	}
 	if(!data.config.alpha) {
-		ret = ret + "0" + "\n" +
-				    "0" + "\n" +
-				    "0" + "\n";
+		ret = ret + "1e-15" + "\n" +
+				    "2.0" + "\n" +
+				    "10.0" + "\n";
 	}
 	if(typeof(data.config.gamma) != "undefined" && data.config.gamma.length > 0) {
 		ret = ret + data.config.gamma[0] + "\n" +

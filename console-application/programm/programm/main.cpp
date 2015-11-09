@@ -8,4 +8,5 @@ void main()
   bla.calc();
   double t2 = omp_get_wtime();
   printf("TIME: %.6lf\n", (t2 - t1) * 1000.0f);
+  getchar();
 }

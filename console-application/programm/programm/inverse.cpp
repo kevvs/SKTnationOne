@@ -398,7 +398,7 @@ void C_Inverse::print_solution(const vector<double> &solution, const string &fil
       double px = solution[curr->num * 3];
       ofs << px << "\t";
 
-      curr = curr->neighbor[1]; // Сосед справа
+      curr = curr -> neighbor[1]; // Сосед справа
       if(!curr) end_x = true;
     }
     ofs << endl;
